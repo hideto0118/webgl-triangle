@@ -139,5 +139,23 @@ var initDemo = function() {
   //
   // Main render loop
   //
+  var identityMatrix = new Float32Array(16);
+  mat4.identity(identityMatrix);
+  var angle = 0;
+  var loop = function() {
+    angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+    mat4.rotate(worldMatrix, identityMatrix, angle, [0, 1, 0]);
+    gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
+
+    gl.clearColor(0, 0, 0, 1.0);
+    gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+
+
+
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 };
